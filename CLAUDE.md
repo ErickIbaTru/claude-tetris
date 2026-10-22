@@ -15,7 +15,7 @@ python3 -m http.server 8000      # then visit http://localhost:8000
 
 Three files, no framework, no bundler:
 
-- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), and a shared overlay `#overlay` for both PAUSE and GAME OVER states.
+- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), a shared overlay `#overlay` for PAUSE and GAME OVER (GAME OVER also holds the name input and top 5), and `#start-screen` (title, JUGAR, top 5, stats).
 - **`style.css`** — Dark/retro arcade theme; uses CSS variables, flexbox, and `backdrop-filter` on overlays.
 - **`game.js`** — All game logic (~305 lines, `'use strict'`, no modules).
 
@@ -34,10 +34,11 @@ Three files, no framework, no bundler:
 | Ghost piece | `ghostY()` — projects current piece down until collision; drawn at `globalAlpha = 0.2` |
 | State flags | `paused`, `gameOver`, `animId` (RAF handle), `resumeGuard` (ignora teclas ~150 ms tras reanudar) |
 | Menú de pausa | `#pause-menu` (P/Esc → `togglePause()`); `startLevel` persistido en `localStorage['tetris-start-level']`; `#overlay` solo para GAME OVER |
+| Records | `localStorage['tetris-records']` = `{top[<=5], bestCombo, maxLines}`; `loadRecords`, `saveRecords`, `qualifies`, `addRecord`, `resetRecords`, `renderRecords`; `combo`/`maxCombo` per game (consecutive locks clearing >=1 line) |
 
 ### Game flow
 
-`init()` → `spawn()` → `requestAnimationFrame(loop)`. Each frame: accumulate dt → auto-drop or `lockPiece()` → `draw()`. `lockPiece()` = `merge()` + `clearLines()` + `spawn()`. If `spawn()` immediately collides → `endGame()`.
+`showStartScreen()` (`onStartScreen`) → JUGAR/Enter → `init()` → `spawn()` → `requestAnimationFrame(loop)`. Each frame: accumulate dt → auto-drop or `lockPiece()` → `draw()`. `lockPiece()` = `merge()` + `clearLines()` + `spawn()`. If `spawn()` immediately collides → `endGame()`.
 
 ## Tunable constants (top of game.js)
 
