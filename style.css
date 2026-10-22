@@ -348,3 +348,15 @@ kbd {
   font-family: inherit;
   font-size: 14px;
 }
+
+/* ---- Skins ---- */
+#skin-select {
+  background: var(--canvas-bg);
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
