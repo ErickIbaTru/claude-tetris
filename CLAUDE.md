@@ -30,9 +30,10 @@ Three files, no framework, no bundler:
 | Game loop | `loop(ts)` via `requestAnimationFrame`; `dropAccum` tracks elapsed ms against `dropInterval` |
 | Line clear | `clearLines()` — iterates board bottom-up, splices full rows, prepends empty row |
 | Scoring | `LINE_SCORES = [0,100,300,500,800]` × `level`; hard drop +2/cell, soft drop +1/row |
-| Speed | `dropInterval = max(100, 1000 − (level−1) × 90)` ms; level = `floor(lines/10) + 1` |
+| Speed | `dropInterval = calcInterval(level)` = `max(100, 1000 − (level−1) × 90)` ms; level = `max(startLevel, floor(lines/10) + 1)` |
 | Ghost piece | `ghostY()` — projects current piece down until collision; drawn at `globalAlpha = 0.2` |
-| State flags | `paused`, `gameOver`, `animId` (RAF handle) |
+| State flags | `paused`, `gameOver`, `animId` (RAF handle), `resumeGuard` (ignora teclas ~150 ms tras reanudar) |
+| Menú de pausa | `#pause-menu` (P/Esc → `togglePause()`); `startLevel` persistido en `localStorage['tetris-start-level']`; `#overlay` solo para GAME OVER |
 
 ### Game flow
 
